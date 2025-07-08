@@ -10,17 +10,34 @@ e.preventDefault();
 setMaintask([...maintask, task])
 setTask("");
 }
-let renderTask = <h1>There are no tasks</h1>
+let renderTask; 
+if(maintask.length === 0) 
+  {renderTask = <h1>There are no tasks</h1>}
+else {
+renderTask = maintask.map((todo,index) => {
+  return <li key={index} className='flex items-center mb-5'>
+    <div className='flex justify-between w-2/3 mx-auto'>
+    <h4>{todo}</h4>
+    </div>
+    <button style={{background: 'grey'}} className='px-2 py4 font-bold rounded' onClick={(index) => {deleteHandler(index)}}>
+      Delete</button>
+  </li>
+})
+const deleteHandler = (index) => {
+  let copyTask = [...maintask];
+  copyTask.splice(index,1);
+  setMaintask(copyTask);
+}
+}
   return (
     <>
-    <h1 className='bg-blue-400 text-center font-bold p-1'>
+    <h1 className='bg-blue-400 text-center font-bold p-1 font-5xl'>
       To Do List</h1>
       <form action="" className="flex justify-center" onSubmit={submithandle}>
         <input type="text" onChange={(e)=> {setTask(e.target.value)}} className='border-zinc-500 text-xl border-2 m-2 px-3 py-2' placeholder='Enter task.....'
         value={task}/>
         <button className='bg-blue-400 border-2 m-2 px-3 py-2'>Add</button>
       </form>
-      <hr />
 
       <div className='p-2 bg-blue-300 text-center'>
         <ul>{renderTask}</ul>
